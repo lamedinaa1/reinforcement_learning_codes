@@ -1,0 +1,8 @@
+DOC 1: Venta de carros usados -> venta carro usado
+DOC 2: Venta de libros usados, y venta de libros nuevos -> venta libro usado venta libro nuevo
+DOC 3: Compra de máquinas industriales, y máquinas mecánicas-> compra máquina industrial máquina mecánica
+DOC 4: La máquina en venta es usada -> máquina venta usado
+DOC 5: El libro sobre máquinas industriales es nuevo -> libro máquina industrial nuevo
+
+
+Compra de máquinas de helados -> compra máquina helado
