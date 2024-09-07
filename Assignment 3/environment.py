@@ -31,19 +31,19 @@ class Environment:
                 elif state == '-100':
                     self.rewards.append((-i,j,-100))
                     self.terminal_states.append((-i,j))
-        self.allstates.append((-i,j))
+                self.allstates.append((-i,j))
 
     def get_state_nonterminals(self):
-        return list(set(self.allstates) - set(self.terminal_states))
+        return set(self.allstates) - set(self.terminal_states)
 
-    def set_initial_state(self,state):
+    def set_current_state(self,state):
         """
         set initial state
         """
         if isinstance(state,tuple):
-            self.initial_state = state if (state[0]<=0 and state[1]>=0) else None
+            self.current_state = state if (state[0]<=0 and state[1]>=0) else None
             return True
-        return True
+        return False
 
     def get_current_state(self):
         """
@@ -72,7 +72,6 @@ class Environment:
         """
         next_state =  [0,0]
         reward = 0
-        print(action)
         if action == 'up':
             next_state[0],next_state[1] = self.current_state[0] + 1 ,self.current_state[1]
         elif action == 'down':
@@ -81,6 +80,8 @@ class Environment:
             next_state[0],next_state[1] =  self.current_state[0] ,self.current_state[1]+1
         elif action == 'left':
             next_state[0],next_state[1] = self.current_state[0] ,self.current_state[1]-1
+        
+        next_state = tuple(next_state)
         
         if next_state[0]>=self.nrows or next_state[1]>=self.ncols or next_state[0]>0 or next_state[1]<0:
             return reward,self.current_state
@@ -114,14 +115,35 @@ class Environment:
         En nuestro caso, el estado final estará determinado
         por las casillas de salida (i.e., con un valor definido).
         """
-        rewards = [t for t in self.rewards 
-                   if t[0] == self.current_state[0] and t[1] == self.current_state[1]]
-        if len(rewards)>0:
-            return True
-        elif tuple(self.current_state) in set(self.casillasprohibidas): 
+        if self.current_state in set(self.terminal_states) :
             return True
         return False
     
+if __name__ == '__main__':
+    print('testing')
 
+    #### Gridworld
+    board1 = [
+        ['s' ,''  ,''  ,''  ,''  ,''    ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,''  ,''    ,''    ,''   ,''   ,''],
+        [''  ,'#' ,'#' ,'#' ,'#' ,''    ,'#'   ,'#'  ,'#'  ,''],
+        [''  ,''  ,''  ,''  ,'#' ,''    ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,'#' ,'-1'  ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,'#' ,'1'   ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,'#' ,''    ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,'#' ,'-1'  ,'-1'  ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,''  ,''    ,''    ,''   ,''   ,''],
+        [''  ,''  ,''  ,''  ,''  ,''    ,''    ,''   ,''   ,''],
+    ]
 
+    ### Bridge
+    board = [
+            ['#'   ,'-100'  ,'-100'  ,'-100'   ,'-100'  ,'-100'    ,'#'  ],
+            ['s'   ,'0'     ,'0'     ,'0'      ,'0'     ,'0'       ,'100'  ],
+            ['#'   ,'-100'  ,'-100'  ,'-100'   ,'-100'  ,'-100'    ,'#'  ],
+        ]
+    env = Environment(board)
+
+    env.get_state_nonterminals()
+  
 
