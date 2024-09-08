@@ -25,11 +25,10 @@ class Environment:
                 elif state == '#':
                     self.casillasprohibidas.append((-i,j))
                     self.terminal_states.append((-i,j))
-                elif state == '100':
-                    self.rewards.append((-i,j,100))
-                    self.terminal_states.append((-i,j))
-                elif state == '-100':
-                    self.rewards.append((-i,j,-100))
+                elif (state == '-1' or state=='1' or 
+                      state == '-100' or state== '100'
+                      ):
+                    self.rewards.append((-i,j,int(state)))
                     self.terminal_states.append((-i,j))
                 self.allstates.append((-i,j))
 
@@ -142,8 +141,9 @@ if __name__ == '__main__':
             ['s'   ,'0'     ,'0'     ,'0'      ,'0'     ,'0'       ,'100'  ],
             ['#'   ,'-100'  ,'-100'  ,'-100'   ,'-100'  ,'-100'    ,'#'  ],
         ]
-    env = Environment(board)
+    env = Environment(board1)
 
-    env.get_state_nonterminals()
+    print(env.get_state_nonterminals())
+    print(env.terminal_states)
   
 

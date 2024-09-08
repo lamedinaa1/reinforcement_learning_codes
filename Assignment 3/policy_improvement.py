@@ -16,15 +16,19 @@ class  Policy_improvement:
         self.disccount_factor = disccount_factor
         return
     
-    def set_next_state(self,state,action): 
+    def set_next_state(self,state,action,nrows,ncols):
+        nrows = nrows-1 
+        ncols = ncols-1 
         if action == 'up':
-            next_state = (state[0] + 1,state[1])
+            next_state = (state[0] + 1,state[1]) if state[0] != 0 else state
         elif action == 'down': 
-            next_state = (state[0]-1,state[1])
+            next_state = (state[0]-1,state[1]) if state[0] != -nrows else state
         elif action == 'right': 
-            next_state = (state[0],state[1] + 1)
+            next_state = (state[0],state[1] + 1) if state[1] != ncols else state
         elif action == 'left':
-            next_state = (state[0],state[1] - 1) 
+            next_state = (state[0],state[1] - 1) if state[1] != 0 else state
+        
+        print(f'nrow: {nrows}, ncols: {ncols},state: {state},next_state: {next_state}')
         return next_state
     
     def transition_probabilities(self,state,action,next_state):
@@ -48,6 +52,7 @@ class  Policy_improvement:
     def value(self,state,action,nex_state):
         init_state = self.environment.set_current_state(state)
         reward, _ = self.environment.do_action(action)
+        print(nex_state)
         value_nextState = self.values_states[np.abs(nex_state[0]),nex_state[1]]
         transition_probaility = self.transition_probabilities(state,action,nex_state)
         value = transition_probaility*(reward + self.disccount_factor*value_nextState)
@@ -68,11 +73,12 @@ class  Policy_improvement:
 
     def policy_improvement(self):
         new_policy = {}
-
+        nrows = self.environment.nrows
+        ncols = self.environment.ncols
         for state in self.environment.get_state_nonterminals():
             values_policies = pd.Series([0,0,0,0],index=['up','down','left','right'])
             for a in self.environment.get_posible_actions():
-                next_state = self.set_next_state(state,a)
+                next_state = self.set_next_state(state,a,ncols,nrows)
                 values_policies[a] = self.value(state,a,next_state)
             max_action = values_policies.idxmax()
             new_policy[state] = max_action

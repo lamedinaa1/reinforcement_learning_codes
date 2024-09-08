@@ -15,15 +15,19 @@ class PolicyEvaluation:
         self.disccount_factor = disccount_factor
         return
     
-    def set_next_state(self,state,action): 
+    def set_next_state(self,state,action,nrows,ncols):
+        nrows = nrows-1 
+        ncols = ncols-1 
         if action == 'up':
-            next_state = (state[0] + 1,state[1])
+            next_state = (state[0] + 1,state[1]) if state[0] != 0 else state
         elif action == 'down': 
-            next_state = (state[0]-1,state[1])
+            next_state = (state[0]-1,state[1]) if state[0] != -nrows else state
         elif action == 'right': 
-            next_state = (state[0],state[1] + 1)
+            next_state = (state[0],state[1] + 1) if state[1] != ncols else state
         elif action == 'left':
-            next_state = (state[0],state[1] - 1) 
+            next_state = (state[0],state[1] - 1) if state[1] != 0 else state
+        
+        print(f'nrow: {nrows}, ncols: {ncols},state: {state},next_state: {next_state}')
         return next_state
     
 
@@ -54,12 +58,14 @@ class PolicyEvaluation:
 
     def iteracy_policy_evaluation(self,threshold):
         delta = float('inf')
+        nrows = self.environment.nrows
+        ncols = self.environment.ncols
         while delta > threshold:
             delta = 0
             for state in self.environment.get_state_nonterminals():
                 value = self.values_states[np.abs(state[0])][state[1]]
                 action = self.policy[state] # deterministc policy
-                next_state = self.set_next_state(state,action)
+                next_state = self.set_next_state(state,action,nrows,ncols)
                 self.values_states[np.abs(state[0])][state[1]] = self.value(state,action,next_state)
                 delta = np.max(
                     [
