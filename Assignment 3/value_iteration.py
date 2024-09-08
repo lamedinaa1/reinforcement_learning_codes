@@ -27,7 +27,7 @@ class PolicyEvaluation:
         elif action == 'left':
             next_state = (state[0],state[1] - 1) if state[1] != 0 else state
         
-        print(f'nrow: {nrows}, ncols: {ncols},state: {state},next_state: {next_state}')
+    
         return next_state
     
 

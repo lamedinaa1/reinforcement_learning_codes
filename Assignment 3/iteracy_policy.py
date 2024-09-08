@@ -8,15 +8,11 @@ class Iteracy_policy:
     def __init__(
             self,
             environment: Environment, 
-            # value_iteration: PolicyEvaluation, 
-            # policy_improvement: Policy_improvement,
             values_state_ini: np.array,
             policy_ini: dict, 
              ):
         
         self.environment= environment 
-        # self.value_iteration = value_iteration
-        # self.policy_improvement = policy_improvement
         self.values_state_ini = values_state_ini
         self.policy_ini = policy_ini
 
@@ -44,7 +40,6 @@ class Iteracy_policy:
             )
 
             value_states = pe.iteracy_policy_evaluation(0.9)
-            print(f"values_state: {value_states}")
             
             pi = Policy_improvement(
                 environment=env, 
@@ -52,11 +47,6 @@ class Iteracy_policy:
                 disccount_factor=0.1
             )
             policy_improved = pi.policy_improvement()
-            print(f"""
-                i: {i}\n
-                policy: {policy}\n
-                policy_improved: {policy_improved}
-            """)
             condition = False
             for state in policy_improved.keys():
                 if policy[state] != policy_improved[state]:
