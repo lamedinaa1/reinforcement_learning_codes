@@ -56,18 +56,6 @@ class  Policy_improvement:
         transition_probaility = self.transition_probabilities(state,action,nex_state)
         value = transition_probaility*(reward + self.disccount_factor*value_nextState)
         
-        # print(f"""
-        # ------------------------\n
-        # disccount_factor: {self.disccount_factor}\n
-        # state: {state}\n
-        # nex_state: {nex_state}\n
-        # action: {action}\n
-        # reward: {reward} \n
-        # value_nextState: {value_nextState}\n
-        # transition_probaility: {transition_probaility}\n
-        # value: {value}
-        # ------------------------\n
-        # """)
         return value
     
 

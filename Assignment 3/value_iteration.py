@@ -60,7 +60,9 @@ class PolicyEvaluation:
         delta = float('inf')
         nrows = self.environment.nrows
         ncols = self.environment.ncols
+        i = 0
         while delta > threshold:
+            i += 1 
             delta = 0
             for state in self.environment.get_state_nonterminals():
                 value = self.values_states[np.abs(state[0])][state[1]]
@@ -73,6 +75,7 @@ class PolicyEvaluation:
                         np.abs(value - self.values_states[np.abs(state[0])][state[1]])
                     ]
                     )
+            print(f'iteraciones value: {i}')
         return self.values_states
     
 if __name__ == '__main__':

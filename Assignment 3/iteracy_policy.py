@@ -39,19 +39,20 @@ class Iteracy_policy:
                 disccount_factor
             )
 
-            value_states = pe.iteracy_policy_evaluation(0.9)
+            value_states = pe.iteracy_policy_evaluation(threshold=0.1)
             
             pi = Policy_improvement(
                 environment=env, 
                 values_states=value_states,
-                disccount_factor=0.1
+                disccount_factor=disccount_factor
             )
             policy_improved = pi.policy_improvement()
             condition = False
             for state in policy_improved.keys():
                 if policy[state] != policy_improved[state]:
                     condition = True
-
+                    
+            print(f'i: {i}')
         return policy
     
 

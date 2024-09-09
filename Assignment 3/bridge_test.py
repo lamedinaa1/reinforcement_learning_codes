@@ -26,7 +26,7 @@ if __name__=='__main__':
         (-1,5): 'up',
         (-1,6): 'up',
     }  # deterministic policy for nonterminal states
-    disccount_factor = 0.1 
+    
 
     iteracy_policy = Iteracy_policy(
         environment= env,
@@ -34,6 +34,6 @@ if __name__=='__main__':
         policy_ini= policy
     )
 
-    policy = iteracy_policy.policy_iteration(0.1)
+    policy = iteracy_policy.policy_iteration(disccount_factor=0.1)
 
     print(policy)
